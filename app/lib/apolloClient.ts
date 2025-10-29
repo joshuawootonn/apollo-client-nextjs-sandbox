@@ -6,9 +6,11 @@ function getGraphQLUrl(): string {
     return "/api/graphql";
   }
 
-  // Server-side: use absolute URL with localhost
-  const host = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3100";
-  return `${host}/api/graphql`;
+  if(process.env.NODE_ENV === "production") {
+    return "https://apollo-client-nextjs-sandbox.vercel.app/api/graphql";
+  }
+
+  return "http://localhost:3100/api/graphql";
 }
 
 export const client = new ApolloClient({

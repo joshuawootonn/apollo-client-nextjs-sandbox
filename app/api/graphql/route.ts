@@ -25,6 +25,10 @@ interface DeletePersonArgs {
   id: string;
 }
 
+interface GetPeopleArgs {
+  id: string;
+}
+
 // Simple in-memory data store
 const people: Person[] = [
   { id: "1", name: "Alice Johnson" },
@@ -56,7 +60,7 @@ const typeDefs = gql`
 // Resolvers
 const resolvers = {
   Query: {
-    people: (): Person[] => people,
+    people: (_parent: object, _args: GetPeopleArgs): Person[] => people,
     person: (
       _parent: object,
       { id }: QueryResolverArgs

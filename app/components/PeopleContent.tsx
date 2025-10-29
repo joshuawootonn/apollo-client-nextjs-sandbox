@@ -1,8 +1,7 @@
 "use client";
 
-import { useBackgroundQuery, skipToken } from "@apollo/client/react";
-import { PeopleList } from "./components/PeopleList";
-import { PeopleInput } from "./components/PeopleInput";
+import { PeopleList } from "./PeopleList";
+import { PeopleInput } from "./PeopleInput";
 import { gql } from "@apollo/client";
 
 export const GET_PEOPLE = gql`
@@ -14,18 +13,7 @@ export const GET_PEOPLE = gql`
   }
 `;
 
-interface Person {
-  id: string;
-  name: string;
-}
-
-const randomId = Math.random().toString(36).substring(2, 11);
 export function PeopleContent() {
-  const [queryRef] = useBackgroundQuery<{ people: Person[] }>(
-    GET_PEOPLE,
-    skipToken
-  );
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-2xl">
@@ -37,7 +25,7 @@ export function PeopleContent() {
         </div>
         <div className="space-y-8">
           <PeopleInput />
-          {queryRef && <PeopleList queryRef={queryRef} />}
+          <PeopleList />
         </div>
       </div>
     </div>
