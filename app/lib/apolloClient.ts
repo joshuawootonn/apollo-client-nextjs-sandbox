@@ -7,7 +7,7 @@ function getGraphQLUrl(): string {
   }
 
   // Server-side: use absolute URL with localhost
-  const host = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3100";
+  const host = process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_BRANCH_URL || "http://localhost:3100";
   return `${host}/api/graphql`;
 }
 

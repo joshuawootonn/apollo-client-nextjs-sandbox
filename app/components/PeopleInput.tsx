@@ -3,7 +3,7 @@
 import { useMutation } from "@apollo/client/react";
 import { gql } from "@apollo/client";
 import { useState } from "react";
-import { GET_PEOPLE } from "../people-content";
+import { GET_PEOPLE } from "./PeopleContent";
 
 const CREATE_PERSON = gql`
   mutation CreatePerson($name: String!) {
