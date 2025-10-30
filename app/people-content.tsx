@@ -1,6 +1,7 @@
 "use client";
 
 import { useBackgroundQuery, skipToken } from "@apollo/client/react";
+import { Suspense, useState } from "react";
 import { PeopleList } from "./components/PeopleList";
 import { PeopleInput } from "./components/PeopleInput";
 import { gql } from "@apollo/client";
@@ -21,9 +22,10 @@ interface Person {
 
 const randomId = Math.random().toString(36).substring(2, 11);
 export function PeopleContent() {
+  const [useSkipToken, setUseSkipToken] = useState(true);
   const [queryRef] = useBackgroundQuery<{ people: Person[] }>(
     GET_PEOPLE,
-    skipToken
+    useSkipToken ? skipToken : { variables: { id: randomId } }
   );
 
   return (
@@ -36,8 +38,31 @@ export function PeopleContent() {
           </p>
         </div>
         <div className="space-y-8">
+          <div className="flex items-center justify-center gap-4">
+            <button
+              onClick={() => setUseSkipToken(!useSkipToken)}
+              className={`rounded-md px-6 py-2 font-medium transition-colors ${
+                useSkipToken
+                  ? "bg-gray-600 text-white hover:bg-gray-700"
+                  : "bg-blue-600 text-white hover:bg-blue-700"
+              }`}
+            >
+              {useSkipToken ? "Using skipToken" : "Using variables"}
+            </button>
+            <span className="text-sm text-gray-600">
+              {useSkipToken
+                ? "Query is skipped"
+                : `Query active with ID: ${randomId}`}
+            </span>
+          </div>
           <PeopleInput />
-          {queryRef && <PeopleList queryRef={queryRef} />}
+          <Suspense
+            fallback={
+              <div className="text-center text-gray-600">Loading...</div>
+            }
+          >
+            {queryRef && <PeopleList queryRef={queryRef} />}
+          </Suspense>
         </div>
       </div>
     </div>
