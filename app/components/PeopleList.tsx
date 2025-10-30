@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { GET_PEOPLE } from "./PeopleContent";
-import { useMutation, useQuery } from "@apollo/client/react";
+import { QueryRef, useMutation, useReadQuery } from "@apollo/client/react";
 import { gql } from "@apollo/client";
 
 const UPDATE_PERSON = gql`
@@ -25,10 +25,12 @@ interface Person {
   name: string;
 }
 
-export function PeopleList() {
-  const { data, error } = useQuery<{ people: Person[] }>(GET_PEOPLE, {
-    variables: { id: "11" },
-  });
+interface PeopleListProps {
+  queryRef: QueryRef<{ people: Person[] }>;
+}
+
+export function PeopleList({ queryRef }: PeopleListProps) {
+  const { data, error } = useReadQuery(queryRef);
   const [updatePerson] = useMutation(UPDATE_PERSON, {
     refetchQueries: [GET_PEOPLE],
   });
